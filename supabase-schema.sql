@@ -1,6 +1,6 @@
 -- ============================================
--- STEP 1: Create the notes table (RLS DISABLED)
--- Run this first to set up the vulnerable state
+-- KROK 1: Vytvoreni tabulky notes (s chybnym RLS)
+-- Spustte toto nejdrive pro nastaveni zranitelneho stavu
 -- ============================================
 
 CREATE TABLE IF NOT EXISTS notes (
@@ -11,15 +11,15 @@ CREATE TABLE IF NOT EXISTS notes (
   created_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
--- Grant access to authenticated users via the anon/authenticated roles
+-- Povoleni pristupu autentizovanym uzivatelum
 ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
 
--- THIS IS THE BUG: An overly permissive policy that lets ANY authenticated user
--- read ALL notes, not just their own.
+-- TOTO JE CHYBA: Prilis permisivni politika, ktera umozni JAKEMUKOLI
+-- autentizovanemu uzivateli cist VSECHNY poznamky, nejen sve vlastni.
 CREATE POLICY "Allow authenticated users to read all notes" ON notes
   FOR SELECT
   TO authenticated
-  USING (true);  -- <-- No user_id check! Anyone can read everything.
+  USING (true);  -- <-- Zadna kontrola user_id! Kdokoli muze cist vsechno.
 
 CREATE POLICY "Allow users to insert their own notes" ON notes
   FOR INSERT
@@ -33,12 +33,12 @@ CREATE POLICY "Allow users to delete their own notes" ON notes
 
 
 -- ============================================
--- STEP 2: THE FIX - Run this AFTER the demo
--- This replaces the broken SELECT policy with a secure one
+-- KROK 2: OPRAVA - Spustte toto PO ukazce
+-- Tim se nahradi chybna SELECT politika za bezpecnou
 -- ============================================
 -- DROP POLICY "Allow authenticated users to read all notes" ON notes;
 --
 -- CREATE POLICY "Allow users to read only their own notes" ON notes
 --   FOR SELECT
 --   TO authenticated
---   USING (auth.uid() = user_id);  -- Now only the note owner can read it
+--   USING (auth.uid() = user_id);  -- Nyni muze poznamky cist pouze jejich vlastnik

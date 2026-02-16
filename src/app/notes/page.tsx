@@ -69,8 +69,8 @@ export default function NotesPage() {
 
   async function exploitFetchAllNotes() {
     setExploitError(null);
-    // This is the "attack" - fetching ALL notes without filtering by user_id.
-    // Without proper RLS, this returns every user's private notes.
+    // Toto je "utok" - nacteni VSECH poznamek bez filtrovani podle user_id.
+    // Bez spravneho RLS toto vrati soukrome poznamky vsech uzivatelu.
     const { data, error } = await supabase
       .from("notes")
       .select("*")
@@ -93,7 +93,7 @@ export default function NotesPage() {
   if (loading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p>Loading...</p>
+        <p>Nacitani...</p>
       </div>
     );
   }
@@ -103,43 +103,43 @@ export default function NotesPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-3xl mx-auto space-y-6">
-        {/* Header */}
+        {/* Hlavicka */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              Secret Notes
+              Tajne Poznamky
             </h1>
             <p className="text-sm text-gray-500">
-              Logged in as <span className="font-mono">{user.email}</span>
+              Prihlasen jako <span className="font-mono">{user.email}</span>
             </p>
           </div>
           <button
             onClick={handleSignOut}
             className="text-sm text-gray-600 hover:text-gray-900 border border-gray-300 px-3 py-1 rounded"
           >
-            Sign Out
+            Odhlasit se
           </button>
         </div>
 
-        {/* Add Note Form */}
+        {/* Formular pro novou poznamku */}
         <form
           onSubmit={addNote}
           className="bg-white rounded-lg shadow p-4 space-y-3"
         >
-          <h2 className="font-semibold text-gray-800">New Note</h2>
+          <h2 className="font-semibold text-gray-800">Nova poznamka</h2>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            placeholder="Title"
+            placeholder="Nazev"
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
-            placeholder="Write your secret note..."
+            placeholder="Napiste svou tajnou poznamku..."
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -147,17 +147,17 @@ export default function NotesPage() {
             type="submit"
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium"
           >
-            Save Note
+            Ulozit poznamku
           </button>
         </form>
 
-        {/* My Notes */}
+        {/* Moje poznamky */}
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="font-semibold text-gray-800 mb-3">
-            My Notes ({myNotes.length})
+            Moje poznamky ({myNotes.length})
           </h2>
           {myNotes.length === 0 ? (
-            <p className="text-gray-400 text-sm">No notes yet.</p>
+            <p className="text-gray-400 text-sm">Zatim zadne poznamky.</p>
           ) : (
             <div className="space-y-3">
               {myNotes.map((note) => (
@@ -175,7 +175,7 @@ export default function NotesPage() {
                     onClick={() => deleteNote(note.id)}
                     className="text-red-500 hover:text-red-700 text-sm ml-3 shrink-0"
                   >
-                    Delete
+                    Smazat
                   </button>
                 </div>
               ))}
@@ -183,58 +183,57 @@ export default function NotesPage() {
           )}
         </div>
 
-        {/* Exploit Section */}
+        {/* Sekce s exploitem */}
         <div className="bg-red-50 border-2 border-red-300 rounded-lg p-4 space-y-3">
           <h2 className="font-semibold text-red-800 text-lg">
-            RLS Vulnerability Demo
+            Ukazka zranitelnosti RLS
           </h2>
           <p className="text-sm text-red-700">
-            The button below runs{" "}
+            Tlacitko nize spusti{" "}
             <code className="bg-red-100 px-1 py-0.5 rounded font-mono text-xs">
               SELECT * FROM notes
             </code>{" "}
-            without any user_id filter. Without proper Row Level Security
-            policies, this will return <strong>every user&apos;s</strong> private
-            notes.
+            bez filtrovani podle user_id. Bez spravnych Row Level Security
+            politik toto vrati soukrome poznamky{" "}
+            <strong>vsech uzivatelu</strong>.
           </p>
 
           <button
             onClick={exploitFetchAllNotes}
             className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-bold"
           >
-            View ALL Notes (RLS Bug)
+            Zobrazit VSECHNY poznamky (RLS chyba)
           </button>
 
           {exploitError && (
             <p className="text-sm text-red-600 bg-red-100 p-2 rounded">
-              Error: {exploitError}
+              Chyba: {exploitError}
             </p>
           )}
 
           {allNotes !== null && (
             <div className="mt-3 space-y-2">
               <p className="text-sm font-medium text-red-800">
-                Returned {allNotes.length} note(s) total -{" "}
-                {otherUsersNotes.length} from OTHER users:
+                Vraceno {allNotes.length} poznamek celkem -{" "}
+                {otherUsersNotes.length} od JINYCH uzivatelu:
               </p>
 
               {allNotes.length === 0 && (
                 <p className="text-sm text-green-700 bg-green-50 p-2 rounded">
-                  No notes returned - RLS is working correctly!
+                  Zadne poznamky nebyly vraceny - RLS funguje spravne!
                 </p>
               )}
 
               {otherUsersNotes.length === 0 && allNotes.length > 0 && (
                 <p className="text-sm text-green-700 bg-green-50 p-2 rounded">
-                  Only your own notes were returned - RLS is working
-                  correctly!
+                  Byly vraceny pouze vase poznamky - RLS funguje spravne!
                 </p>
               )}
 
               {otherUsersNotes.length > 0 && (
                 <p className="text-sm text-red-700 bg-red-100 p-2 rounded font-bold">
-                  VULNERABILITY: You can see {otherUsersNotes.length} note(s)
-                  from other users!
+                  ZRANITELNOST: Vidite {otherUsersNotes.length} poznamek od
+                  jinych uzivatelu!
                 </p>
               )}
 
@@ -261,7 +260,7 @@ export default function NotesPage() {
                               : "bg-red-200 text-red-800"
                           }`}
                         >
-                          {isMine ? "Your note" : "OTHER USER"}
+                          {isMine ? "Vase poznamka" : "JINY UZIVATEL"}
                         </span>
                       </div>
                       <p className="text-gray-600 mt-1">{note.content}</p>
@@ -274,16 +273,16 @@ export default function NotesPage() {
               </div>
 
               <div className="mt-3 bg-yellow-50 border border-yellow-300 rounded p-3 text-sm text-yellow-800">
-                <strong>How to fix:</strong> Run the commented-out SQL in{" "}
+                <strong>Jak opravit:</strong> Spustte zakomentovany SQL v{" "}
                 <code className="bg-yellow-100 px-1 rounded font-mono text-xs">
                   supabase-schema.sql
                 </code>{" "}
-                (Step 2) in your Supabase SQL Editor. This replaces the
-                permissive SELECT policy with one that checks{" "}
+                (Krok 2) ve vasem Supabase SQL Editoru. Tim se nahradi
+                permisivni SELECT politika za takovou, ktera kontroluje{" "}
                 <code className="bg-yellow-100 px-1 rounded font-mono text-xs">
                   auth.uid() = user_id
                 </code>
-                . Then click the button again to verify the fix.
+                . Pote znovu kliknete na tlacitko pro overeni opravy.
               </div>
             </div>
           )}

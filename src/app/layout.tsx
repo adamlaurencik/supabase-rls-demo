@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Secret Notes - RLS Demo",
-  description: "Demonstrating Supabase Row Level Security issues",
+  title: "Tajne Poznamky - RLS Demo",
+  description: "Ukazka zranitelnosti Row Level Security v Supabase",
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="cs">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

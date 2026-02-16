@@ -36,16 +36,16 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-sm bg-white rounded-lg shadow-md p-8">
         <h1 className="text-2xl font-bold text-center text-gray-900 mb-2">
-          Secret Notes
+          Tajne Poznamky
         </h1>
         <p className="text-sm text-center text-gray-500 mb-6">
-          RLS Vulnerability Demo
+          Ukazka zranitelnosti RLS
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+              E-mail
             </label>
             <input
               type="email"
@@ -58,7 +58,7 @@ export default function LoginPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
+              Heslo
             </label>
             <input
               type="password"
@@ -67,7 +67,7 @@ export default function LoginPage() {
               required
               minLength={6}
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="min 6 characters"
+              placeholder="minimalne 6 znaku"
             />
           </div>
 
@@ -82,7 +82,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 font-medium"
           >
-            {loading ? "..." : isSignUp ? "Sign Up" : "Sign In"}
+            {loading ? "..." : isSignUp ? "Registrovat se" : "Prihlasit se"}
           </button>
         </form>
 
@@ -94,8 +94,8 @@ export default function LoginPage() {
           className="mt-4 w-full text-sm text-blue-600 hover:underline"
         >
           {isSignUp
-            ? "Already have an account? Sign in"
-            : "Don't have an account? Sign up"}
+            ? "Uz mate ucet? Prihlaste se"
+            : "Nemate ucet? Zaregistrujte se"}
         </button>
       </div>
     </div>
