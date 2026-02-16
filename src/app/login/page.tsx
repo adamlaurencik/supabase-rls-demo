@@ -97,6 +97,16 @@ export default function LoginPage() {
             ? "Uz mate ucet? Prihlaste se"
             : "Nemate ucet? Zaregistrujte se"}
         </button>
+
+        <div className="mt-6 border-t border-gray-200 pt-4">
+          <p className="text-xs text-gray-500 text-center mb-2">
+            Testovaci ucty
+          </p>
+          <div className="text-xs text-gray-600 bg-gray-50 rounded p-3 space-y-1 font-mono">
+            <p>alice@vibecodinghub.cz / 123456</p>
+            <p>bob@vibecodinghub.cz / 123456</p>
+          </div>
+        </div>
       </div>
     </div>
   );
